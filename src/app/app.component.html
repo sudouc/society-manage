@@ -1,3 +1,33 @@
-<h1>
-  {{title}}
-</h1>
+<nav class="">
+    <div class="container">
+
+        <!-- Collect the nav links, forms, and other content for toggling -->
+        <div class="">
+            <!--Unauthenticated Menu-->
+            <ul *ngIf="auth === null" class="nav navbar-nav">
+                <li><a routerLink="login" routerLinkActive="active">Login</a></li>
+                <li><a routerLink="register" routerLinkActive="active">Register</a></li>
+            </ul>
+
+            <!--Authenticated Menu-->
+            <div *ngIf="auth">
+                <ul class="">
+                    <li><a routerLink="members" routerLinkActive="active">Members</a></li>
+                    <li><a routerLink="executive" routerLinkActive="active">Executive</a></li>
+                    <li><a routerLink="executive" routerLinkActive="active">Payments</a></li>
+                </ul>
+                <ul class="nav navbar-nav navbar-right">
+                    <li *ngIf="auth.providerData !== undefined">
+                        <p class="navbar-text">Signed in as <a routerLink="settings" class="navbar-link">{{auth.auth.email}}</a></p>
+                    </li>
+                    <li><button class="btn navbar-btn" (click)="logout()">Logout</button></li>
+                </ul>
+            </div>
+        </div>
+        <!-- /.navbar-collapse -->
+    </div>
+    <!-- /.container-fluid -->
+</nav>
+<div class="container">
+    <router-outlet></router-outlet>
+</div>
