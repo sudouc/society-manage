@@ -1,33 +1,24 @@
-<nav class="">
-    <div class="container">
+<md-toolbar>
+    <span>SUDO Membership Management</span>
 
-        <!-- Collect the nav links, forms, and other content for toggling -->
-        <div class="">
-            <!--Unauthenticated Menu-->
-            <ul *ngIf="auth === null" class="nav navbar-nav">
-                <li><a routerLink="login" routerLinkActive="active">Login</a></li>
-                <li><a routerLink="register" routerLinkActive="active">Register</a></li>
-            </ul>
+    <!-- This fills the remaining space of the current row -->
+    <span class="fill-width"></span>
 
-            <!--Authenticated Menu-->
-            <div *ngIf="auth">
-                <ul class="">
-                    <li><a routerLink="members" routerLinkActive="active">Members</a></li>
-                    <li><a routerLink="executive" routerLinkActive="active">Executive</a></li>
-                    <li><a routerLink="executive" routerLinkActive="active">Payments</a></li>
-                </ul>
-                <ul class="nav navbar-nav navbar-right">
-                    <li *ngIf="auth.providerData !== undefined">
-                        <p class="navbar-text">Signed in as <a routerLink="settings" class="navbar-link">{{auth.auth.email}}</a></p>
-                    </li>
-                    <li><button class="btn navbar-btn" (click)="logout()">Logout</button></li>
-                </ul>
-            </div>
-        </div>
-        <!-- /.navbar-collapse -->
-    </div>
-    <!-- /.container-fluid -->
-</nav>
-<div class="container">
+    <!--Unauthenticated Menu-->
+    <span *ngIf="auth === null">
+        <button md-button routerLink="login" routerLinkActive="active">Login</button>
+        <button md-button routerLink="register" routerLinkActive="active">Register</button>
+     </span>
+
+    <!--Authenticated Menu-->
+    <span *ngIf="auth">
+        <button md-button color="primary" routerLink="members" routerLinkActive="active">Members</button>
+        <button md-button color="primary" routerLink="executive" routerLinkActive="active">Executive</button>
+        <button md-button color="primary" routerLink="payments" routerLinkActive="active">Payments</button>
+        <h6 style="display:inline;" *ngIf="auth.providerData !== undefined" >Signed in as {{auth.auth.email}}</h6>
+        <button md-button color="warn" (click)="logout()">Logout</button>
+    </span>
+</md-toolbar>
+<div>
     <router-outlet></router-outlet>
 </div>

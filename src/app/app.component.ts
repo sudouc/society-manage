@@ -11,7 +11,7 @@ export class AppComponent implements OnInit, OnDestroy  {
 
     private subscription;
     title: string = 'SUDO Memberships';         // Title of the app
-    auth;            // boolean representation of the auth status of the app
+    auth;            // app auth state
 
     constructor(private af: AngularFire){}
 

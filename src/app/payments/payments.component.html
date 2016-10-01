@@ -1,0 +1,64 @@
+<div class="nine columns">
+    <md-card>
+        <md-toolbar color="primary">
+            <span>Payments</span>
+            <span class="fill-width"></span>
+            <button md-button (click)="add()">+ Add Payment</button>
+        </md-toolbar>
+        <br>
+        <md-card-content>
+            <div style="overflow:scroll;">
+                <table class="u-full-width">
+                    <thead>
+                        <tr>
+                            <th>
+                                ID
+                            </th>
+                            <th>
+                                Date
+                            </th>
+                            <th>
+                                Payer
+                            </th>
+                            <th>
+                                Amount
+                            </th>
+                            <th>
+                                Bank Ref
+                            </th>
+                            <th>
+                                Type
+                            </th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr class="hover" *ngFor="let payment of payments | async" (click)="select(payment)">
+                            <td>
+                                {{payment.$key}}
+                            </td>
+                            <td>
+                                {{payment.date}}
+                            </td>
+                            <td>
+                                {{(payment.memberObject | async)?.firstname}} {{(payment.memberObject | async)?.lastname}}
+                            </td>
+                            <td>
+                                {{payment.amount}}
+                            </td>
+                            <td>
+                                {{payment.bankreference}}
+                            </td>
+                            <td>
+                                {{payment.type}}
+                            </td>
+                        </tr>
+                    </tbody>
+                    <div *ngIf="!hasPayments">
+                        <p>No payments to show</p>
+                    </div>
+                </table>
+            </div>
+        </md-card-content>
+    </md-card>
+</div>
+<app-edit-payment class="three columns" [payment]="selectedPayment" [id]="id"></app-edit-payment>

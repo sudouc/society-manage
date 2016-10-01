@@ -1,0 +1,25 @@
+<md-card>
+    <md-toolbar color="primary">Edit Payment</md-toolbar>
+    <br>
+    <md-card-content>
+        <form *ngIf="model" #paymentForm="ngForm" (ngSubmit)="onSubmit()">
+            <h6 *ngIf="model.$key">Payment from {{(payment.memberObject | async)?.firstname}} {{(payment.memberObject | async)?.lastname}}</h6>
+            <h6>Reciept ID: {{payment.$key}}</h6>
+            <h6 *ngIf="!model.$key">New Payment...</h6>
+            <button md-button color="primary" type="button" routerLink="/executive" routerLinkActive="active" disabled>Send Reciept (not implemented)</button>
+            <md-input type="number" step="any" class="full-width" name="amount" placeholder="Amount" required [(ngModel)]="model.amount"
+                #amount="ngModel" [disabled]="submitted">
+                <span md-prefix>$&nbsp;</span></md-input>
+            <md-input type="text" class="full-width" name="Bank Reference" placeholder="Bank Reference" required [(ngModel)]="model.bankreference" #bankreference="ngModel"
+                [disabled]="submitted"></md-input>
+            <md-input type="text" class="full-width" name="type" placeholder="Type" required [(ngModel)]="model.type" #type="ngModel"
+                [disabled]="submitted"></md-input>
+            <md-input type="date" class="full-width" name="date" placeholder="Date" required [(ngModel)]="model.date" #phone="ngModel"
+                [disabled]="submitted"></md-input>
+
+            <button md-button color="primary" type="submit" [disabled]="paymentForm.form.pristine || !paymentForm.form.valid">Save</button>
+            <button md-button color="accent" type="button" (click)="discard()" [disabled]="paymentForm.form.pristine">Discard Changes</button>
+        </form>
+        <span *ngIf="!model">Please Select a Payment or Click Add</span>
+    </md-card-content>
+</md-card>

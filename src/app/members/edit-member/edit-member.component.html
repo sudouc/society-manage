@@ -1,0 +1,30 @@
+<md-card>
+    <md-toolbar color="primary">Edit&nbsp;<span *ngIf="!model">Member</span><span *ngIf="model">{{model.firstname}} {{model.lastname}}</span></md-toolbar>
+    <br>
+    <md-card-content>
+        <form *ngIf="model" #memberForm="ngForm" (ngSubmit)="onSubmit()">
+            
+            <button md-button color="primary" type="button" routerLink="/executive" routerLinkActive="active" [disabled]="!model?.$key || model.executive" (click)="makeExec(model)">Make Executive</button>
+            <p *ngIf="model.executive">This member is already part of the executive</p><br *ngIf="!model.executive">
+            <button md-button color="primary" type="button" routerLink="/payments/{{model.$key}}" routerLinkActive="active">View Payments</button>
+            <md-input type="text" class="full-width" name="firstname" placeholder="First Name" required [(ngModel)]="model.firstname"
+                #firstname="ngModel" [disabled]="submitted"></md-input>
+            <md-input type="text" class="full-width" name="lastname" placeholder="Last Name" required [(ngModel)]="model.lastname" #lastname="ngModel"
+                [disabled]="submitted"></md-input>
+            <md-input type="email" class="full-width" name="email" placeholder="Email" required [(ngModel)]="model.email" #email="ngModel"
+                [disabled]="submitted"></md-input>
+            <md-input type="text" class="full-width" name="phone" placeholder="Phone" required [(ngModel)]="model.phone" #phone="ngModel"
+                [disabled]="submitted"></md-input>
+            <md-input type="text" class="full-width" name="studentid" placeholder="Student ID" required [(ngModel)]="model.studentid"
+                #studentid="ngModel" [disabled]="submitted"></md-input>
+            <md-input type="text" class="full-width" name="type" placeholder="Type" required [(ngModel)]="model.type" #type="ngModel"
+                [disabled]="submitted"></md-input>
+            <md-input type="text" class="full-width" name="university" placeholder="University" required [(ngModel)]="model.university"
+                #university="ngModel" [disabled]="submitted"></md-input>
+
+            <button md-button color="primary" type="submit" [disabled]="memberForm.form.pristine || !memberForm.form.valid">Save</button>
+            <button md-button color="accent" type="button" (click)="discard()" [disabled]="memberForm.form.pristine">Discard Changes</button>
+        </form>
+        <span *ngIf="!model">Please Select a Member or Click Add</span>
+    </md-card-content>
+</md-card>
