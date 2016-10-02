@@ -1,31 +1,44 @@
-<md-card>
-    <md-toolbar color="primary">{{title}}</md-toolbar>
-    <md-card-content>
+<div class="container">
+    <div *ngIf="!(submissionError == undefined)">
+        {{submissionError.message}}
+    </div>
 
-        <div *ngIf="!(submissionError == undefined)">
-            {{submissionError.message}}
-        </div>
+    <br><br>
+    <div class="row">
+        <form (ngSubmit)="onSubmit()" #loginForm="ngForm" autocomplete="off" class="col s12 m6 offset-m3">
 
-        <form (ngSubmit)="onSubmit()" #loginForm="ngForm" autocomplete="off">
+            <h5>{{title}}</h5>
 
-            <md-input type="email" class="full-width" name="email" placeholder="email" required pattern=".+@.+" [(ngModel)]="model.email"
-                #email="ngModel" [disabled]="submitted"></md-input>
-            <div *ngIf="email.errors && email.errors.required && email.touched" class="alert alert-danger">
-                Email is required
+            <p><a class="waves-effect waves-light btn" (click)="githubLogin()">Login With Github!</a></p>
+
+            <div class="row">
+                <div class="input-field col s12">
+                    <input type="email" name="email"required pattern=".+@.+" [(ngModel)]="model.email" #email="ngModel"
+                        [disabled]="submitted">
+                    <label for="email">Email</label>
+                </div>
+                <div *ngIf="email.errors && email.errors.required && email.touched" class="alert alert-danger">
+                    Email is required
+                </div>
+                <div *ngIf="email.errors && email.errors.pattern && email.touched" class="alert alert-danger">
+                    Email invalid
+                </div>
             </div>
-            <div *ngIf="email.errors && email.errors.pattern && email.touched" class="alert alert-danger">
-                Email invalid
+
+            <div class="row">
+                <div class="input-field col s12">
+                    <input type="password" name="password" required [(ngModel)]="model.password" #password="ngModel" [disabled]="submitted">
+                    <label for="password">Password</label>
+                </div>
+                <div *ngIf="password.errors && password.errors.required && password.touched" class="alert alert-danger">
+                    Password is required
+                </div>
             </div>
 
-            <md-input type="password" class="full-width" name="password" placeholder="password" required [(ngModel)]="model.password"
-                #password="ngModel" [disabled]="submitted"></md-input>
-            <div *ngIf="password.errors && password.errors.required && password.touched" class="alert alert-danger">
-                Password is required
+            <div>
+                <button class="waves-effect waves-light btn" type="submit" [disabled]="!loginForm.form.valid || submitted">Login</button>
             </div>
-
-            <button md-button type="submit" [disabled]="!loginForm.form.valid || submitted">Login</button>
 
         </form>
-        <button md-button (click)="githubLogin()">Login With Github!</button>
-    </md-card-content>
-</md-card>
+    </div>
+</div>

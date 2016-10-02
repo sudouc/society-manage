@@ -1,73 +1,76 @@
-<div class="eight columns">
-    <md-card>
-        <md-toolbar color="primary">
-            <span>Members</span>
-            <span class="fill-width"></span>
-            <button md-button (click)="add()">+ Add Member</button>
-        </md-toolbar>
-        <br>
-        <md-card-content>
-            <div style="overflow:scroll;">
-                <table class="u-full-width">
-                    <thead>
-                        <tr>
-                            <th>
-                                First
-                            </th>
-                            <th>
-                                Last
-                            </th>
-                            <th>
-                                Uni
-                            </th>
-                            <th>
-                                StudentID
-                            </th>
-                            <th>
-                                Type
-                            </th>
-                            <th>
-                                Email
-                            </th>
-                            <th>
-                                Phone
-                            </th>
-                            <th>
-                                Exec
-                            </th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr class="hover" *ngFor="let member of members | async" (click)="select(member)">
-                            <td>
-                                {{member.firstname}}
-                            </td>
-                            <td>
-                                {{member.lastname}}
-                            </td>
-                            <td>
-                                {{member.university}}
-                            </td>
-                            <td>
-                                {{member.studentid}}
-                            </td>
-                            <td>
-                                {{member.type}}
-                            </td>
-                            <td>
-                                {{member.email}}
-                            </td>
-                            <td>
-                                {{member.phone}}
-                            </td>
-                            <td>
-                                <md-icon *ngIf="member.executive">person</md-icon>
-                            </td>
-                        </tr>
-                    </tbody>
-                </table>
+<div>
+    <div class="container">
+        <div class="row">
+            <div class="col s6">
+                <h5>{{title}}</h5>
             </div>
-        </md-card-content>
-    </md-card>
+            <div class="col s6 right-align">
+                <a class="waves-effect waves-light btn" (click)="add()">Add Member</a>
+            </div>
+        </div>
+    </div>
+    <br>
+    <div class="container">
+        <div class="row">
+            <table>
+                <thead>
+                    <tr>
+                        <th>
+                            First
+                        </th>
+                        <th>
+                            Last
+                        </th>
+                        <th>
+                            Uni
+                        </th>
+                        <th>
+                            StudentID
+                        </th>
+                        <th>
+                            Type
+                        </th>
+                        <th>
+                            Email
+                        </th>
+                        <th>
+                            Phone
+                        </th>
+                        <th>
+                            Exec
+                        </th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr class="hover" *ngFor="let member of members | async" (click)="select(member)">
+                        <td>
+                            {{member.firstname}}
+                        </td>
+                        <td>
+                            {{member.lastname}}
+                        </td>
+                        <td>
+                            {{member.university}}
+                        </td>
+                        <td>
+                            {{member.studentid}}
+                        </td>
+                        <td>
+                            {{member.type}}
+                        </td>
+                        <td>
+                            {{member.email}}
+                        </td>
+                        <td>
+                            {{member.phone}}
+                        </td>
+                        <td>
+                            <p *ngIf="member.executive">exec</p>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
 </div>
 <app-edit-member class="four columns" [member]="selectedMember"></app-edit-member>

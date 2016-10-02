@@ -20,7 +20,7 @@ export class LoginComponent implements OnInit {
 
     ngOnInit() {
         this.af.auth.subscribe(
-            data => this.onSuccess(data),
+            auth => this.onSuccess(auth),
             err => this.onFail(err),
         );
 
@@ -33,15 +33,16 @@ export class LoginComponent implements OnInit {
         })
             .then((data) => {
                 // Enter the user's info in the users table
-                // this.af.auth.subscribe(_auth => {
-                //     console.log(_auth.auth);
-                //     this.af.database.object('users/' + data.uid).set({
-                //         displayName: _auth.auth.displayName,
-                //         email: _auth.auth.email,
-                //         emailVerified: _auth.auth.emailVerified,
-                //         photoUrl: _auth.auth.photoURL
-                //     });
-                // });
+                this.af.auth.subscribe(_auth => {
+                    console.log(_auth.auth);
+                    this.af.database.object('users/' + data.uid + '/info').set({
+                        displayName: _auth.auth.displayName,
+                        email: _auth.auth.email,
+                        emailVerified: _auth.auth.emailVerified,
+                        photoUrl: _auth.auth.photoURL
+                    });
+                });
+                // TODO adding of member id to account if they clicked a member ID link
             });
     }
 
@@ -61,14 +62,16 @@ export class LoginComponent implements OnInit {
     }
 
     // Login success, moving on
-    onSuccess(data) {
-        let redirectURL = localStorage.getItem('redirectUrl');
-        if (redirectURL) {
-            this.router.navigate([redirectURL]);
-        } else {
-            this.router.navigate(['/members']);
+    onSuccess(auth) {
+        if (auth) {
+            let redirectURL = localStorage.getItem('redirectUrl');
+            if (redirectURL) {
+                this.router.navigate([redirectURL]);
+            } else {
+                this.router.navigate(['/members']);
+            }
+            localStorage.removeItem('redirectUrl');
         }
-        localStorage.removeItem('redirectUrl');
     }
 
     // Notify the user of failure and get them to try again

@@ -1,12 +1,12 @@
 <div class="nine columns">
-    <md-card>
-        <md-toolbar color="primary">
+    <div>
+        <div color="primary">
             <span>Payments</span>
             <span class="fill-width"></span>
-            <button md-button (click)="add()">+ Add Payment</button>
-        </md-toolbar>
+            <button (click)="add()">+ Add Payment</button>
+        </div>
         <br>
-        <md-card-content>
+        <div>
             <div style="overflow:scroll;">
                 <table class="u-full-width">
                     <thead>
@@ -58,7 +58,7 @@
                     </div>
                 </table>
             </div>
-        </md-card-content>
-    </md-card>
+        </div>
+    </div>
 </div>
 <app-edit-payment class="three columns" [payment]="selectedPayment" [memberID]=""></app-edit-payment>

@@ -1,11 +1,11 @@
 <div class="twelve columns">
-    <md-card>
-        <md-toolbar color="primary">
+    <div>
+        <div color="primary">
             <span>Executive List</span>
             <span class="fill-width"></span>
-        </md-toolbar>
+        </div>
         <br>
-        <md-card-content>
+        <div>
             <table class="u-full-width">
                 <thead>
                     <tr>
@@ -46,10 +46,10 @@
                             <input type="text" [(ngModel)]="executive.position">
                         </td>
                         <td>
-                            <button md-button color="primary" (click)="savePosition(executive.$key, executive.position)">Save</button>
+                            <button color="primary" (click)="savePosition(executive.$key, executive.position)">Save</button>
                         </td>
                         <td>
-                            <button md-button color="warn" (click)="remove(executive.$key)">Remove</button>
+                            <button color="warn" (click)="remove(executive.$key)">Remove</button>
                         </td>
                     </tr>
                 </tbody>
@@ -57,6 +57,6 @@
             <div *ngIf="!hasExecutive">
                 <h6>No entries to show</h6>
             </div>
-        </md-card-content>
-    </md-card>
+        </div>
+    </div>
 </div>

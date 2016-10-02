@@ -11,6 +11,7 @@ export class MembersComponent implements OnInit {
 
     members: FirebaseListObservable<any[]>;
     selectedMember;
+    title = 'Members';
 
     constructor(private af: AngularFire) { }
 

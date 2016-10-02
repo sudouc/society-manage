@@ -1,25 +1,23 @@
-<md-toolbar>
-    <span>SUDO Membership Management</span>
+<nav>
+    <div class="nav-wrapper">
+        <a href="" class="brand-logo">SUDO Membership Management</a>
 
-    <!-- This fills the remaining space of the current row -->
-    <span class="fill-width"></span>
+        <!--Unauthenticated Menu-->
+        <ul *ngIf="authState === null" id="nav-mobile" class="right hide-on-med-and-down">
+            <li routerLink="login" routerLinkActive="active"><a>Login</a></li>
+        </ul>
 
-    <!--Unauthenticated Menu-->
-    <span *ngIf="auth === null">
-        <button md-button routerLink="login" routerLinkActive="active">Login</button>
-        <button md-button routerLink="register" routerLinkActive="active">Register</button>
-     </span>
-
-    <!--Authenticated Menu-->
-    <span *ngIf="auth">
-        <button md-button color="primary" routerLink="profile" routerLinkActive="active">Profile</button>
-        <button md-button color="primary" routerLink="members" routerLinkActive="active">Members</button>
-        <button md-button color="primary" routerLink="executive" routerLinkActive="active">Executive</button>
-        <button md-button color="primary" routerLink="payments" routerLinkActive="active">Payments</button>
-        <h6 style="display:inline;" *ngIf="auth.providerData !== undefined" >Signed in as {{auth.auth.email}}</h6>
-        <button md-button color="warn" (click)="logout()">Logout</button>
-    </span>
-</md-toolbar>
-<div>
+        <!--Authenticated Menu-->
+        <ul *ngIf="authState" id="nav-mobile" class="right hide-on-med-and-down">
+            <li outerLink="profile" routerLinkActive="active"><a>Profile</a></li>
+            <li routerLink="members" routerLinkActive="active"><a>Members</a></li>
+            <li routerLink="executive" routerLinkActive="active"><a>Executive</a></li>
+            <li routerLink="payments" routerLinkActive="active"><a>Payments</a></li>
+            <li routerLink="profile" routerLinkActive="active"><a>{{authState.auth.email}}</a></li>
+            <li><a color="warn" (click)="logout()" class="waves-effect waves-light btn">Logout</a></li>
+        </ul>
+    </div>
+</nav>
+<main>
     <router-outlet></router-outlet>
-</div>
+</main>
