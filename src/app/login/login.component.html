@@ -1,26 +1,20 @@
 <div class="container">
-    <div *ngIf="!(submissionError == undefined)">
-        {{submissionError.message}}
-    </div>
-
-    <br><br>
     <div class="row">
-        <form (ngSubmit)="onSubmit()" #loginForm="ngForm" autocomplete="off" class="col s12 m6 offset-m3">
+        <form (ngSubmit)="passwordLogin()" #loginForm="ngForm" autocomplete="off" class="col s12 m6 offset-m3">
 
-            <h5>{{title}}</h5>
+            <h3>{{title}}</h3>
 
             <p><a class="waves-effect waves-light btn" (click)="githubLogin()">Login With Github!</a></p>
 
             <div class="row">
                 <div class="input-field col s12">
-                    <input type="email" name="email"required pattern=".+@.+" [(ngModel)]="model.email" #email="ngModel"
-                        [disabled]="submitted">
+                    <input type="email" name="email" required pattern=".+@.+" [(ngModel)]="model.email" #email="ngModel" [disabled]="submitted">
                     <label for="email">Email</label>
                 </div>
-                <div *ngIf="email.errors && email.errors.required && email.touched" class="alert alert-danger">
+                <div *ngIf="email.errors && email.errors.required && email.touched" class="card-panel red lighten-2">
                     Email is required
                 </div>
-                <div *ngIf="email.errors && email.errors.pattern && email.touched" class="alert alert-danger">
+                <div *ngIf="email.errors && email.errors.pattern && email.touched" class="card-panel red lighten-2">
                     Email invalid
                 </div>
             </div>
@@ -30,12 +24,15 @@
                     <input type="password" name="password" required [(ngModel)]="model.password" #password="ngModel" [disabled]="submitted">
                     <label for="password">Password</label>
                 </div>
-                <div *ngIf="password.errors && password.errors.required && password.touched" class="alert alert-danger">
+                <div *ngIf="password.errors && password.errors.required && password.touched" class="card-panel red lighten-2">
                     Password is required
                 </div>
             </div>
 
-            <div>
+            <div class="row">
+                <div *ngIf="!(submissionError == undefined)" class="card-panel red lighten-2">
+                    {{submissionError.message}}
+                </div>
                 <button class="waves-effect waves-light btn" type="submit" [disabled]="!loginForm.form.valid || submitted">Login</button>
             </div>
 

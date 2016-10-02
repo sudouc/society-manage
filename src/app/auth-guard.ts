@@ -18,7 +18,7 @@ export class AuthGuard implements CanActivate {
     canActivate(route: ActivatedRouteSnapshot, state: RouterStateSnapshot) {
 
         if (!this.subscription) {
-            console.log('subscribing to auth state!');
+            console.log('[AuthGuard] Subscribing to Auth State!');
             // Subscribe to auth state if we're not already
             this.subscription = this.af.auth.subscribe(
                 auth => this.auth = auth
@@ -31,19 +31,19 @@ export class AuthGuard implements CanActivate {
         if (this.auth) {
 
             if (anon_routes.indexOf(state.url) > -1) {
-                console.log('AuthGuard#canActivate DISALLOW: ' + state.url + ' because already authenticated');
+                console.log('[AuthGuard] DISALLOW: ' + state.url + ' because already authenticated');
                 // Nav to member management
                 this.router.navigate(['/members']);
                 return false;
             }
-            console.log('AuthGuard#canActivate ALLOW: ' + state.url + ' because already authenticated');
+            console.log('[AuthGuard] canActivate ALLOW: ' + state.url + ' because already authenticated');
             // Otherwise, allow
             return true;
 
         } else if (anon_routes.indexOf(state.url) > -1) {
 
             // If we are AREN'T authenticated but trying to access /login or /register, allow
-            console.log('AuthGuard#canActivate ALLOW: ' + state.url + ' because not authenticated');
+            console.log('[AuthGuard] canActivate ALLOW: ' + state.url + ' because not authenticated');
             return true;
 
         } else {
@@ -52,8 +52,8 @@ export class AuthGuard implements CanActivate {
             // Route, save our route and go to login 
             // Store the attempted URL for redirecting
             localStorage.setItem('redirectUrl', state.url);
-            console.log('AuthGuard#canActivate DISALLOW: ' +
-                state.url + ' because already not authenticated, BUT saved it for redirect after login');
+            console.log('[AuthGuard] canActivate DISALLOW: ' +
+                state.url + ' because already not authenticated, saved for redirect');
             // Navigate to the login page
             this.router.navigate(['/login']);
             return false;

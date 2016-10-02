@@ -11,28 +11,25 @@ import { AngularFire, AuthProviders, AuthMethods } from 'angularfire2';
 })
 export class LoginComponent implements OnInit {
 
-    title: string = 'Login';
-    model = { email: '', password: '' };
-    submitted: boolean = false;
-    submissionError: string = undefined; // Used to show the user any errors with login
+    title: string = 'Login';                // Page Title
+    model = { email: '', password: '' };    // Username/Password Model
+    submitted: boolean = false;             // Flag if the 
+    submissionError: string = undefined;    // Used to show the user any errors with login
 
     constructor(private af: AngularFire, private router: Router) { }
 
     ngOnInit() {
         this.af.auth.subscribe(
-            auth => this.onSuccess(auth),
-            err => this.onFail(err),
+            auth => this.authSuccess(auth)
         );
-
     }
 
-    githubLogin() {
+    githubLogin() {                                 // Login with Github
         this.af.auth.login({
             provider: AuthProviders.Github,
             method: AuthMethods.Popup,
         })
-            .then((data) => {
-                // Enter the user's info in the users table
+            .then((data) => {                       // Update user/{uid}/info in firebase
                 this.af.auth.subscribe(_auth => {
                     console.log(_auth.auth);
                     this.af.database.object('users/' + data.uid + '/info').set({
@@ -42,27 +39,31 @@ export class LoginComponent implements OnInit {
                         photoUrl: _auth.auth.photoURL
                     });
                 });
-                // TODO adding of member id to account if they clicked a member ID link
+            }).catch(err => {                       // Catch login errors from Github Login
+                // nom
+                console.error(err);
             });
     }
 
-    // On form submission, submit the user details to service for authentication
-    onSubmit() {
+    passwordLogin() {
         this.submitted = true;
         this.submissionError = undefined;
 
-        // On authentication success we will be redirected by the AppComponent
-        // All we need to do here is catch and show any errors
         this.af.auth.login(
             this.model,
             {
                 provider: AuthProviders.Password,
                 method: AuthMethods.Password,
-            });
+            })
+            .then(auth =>                           // On success call the success method
+                this.authSuccess(auth)
+            )
+            .catch(err =>                           // On fail call the error method
+                this.authFail(err)
+            );
     }
 
-    // Login success, moving on
-    onSuccess(auth) {
+    authSuccess(auth) {                         // Password login success
         if (auth) {
             let redirectURL = localStorage.getItem('redirectUrl');
             if (redirectURL) {
@@ -74,10 +75,8 @@ export class LoginComponent implements OnInit {
         }
     }
 
-    // Notify the user of failure and get them to try again
-    onFail(err) {
-        // TODO Check if the failure type is a timeout and if so show that to the user instead
-        console.error('[LoginComponent] Auth request Failed: ' + JSON.stringify(err));
+    authFail(err) {                             // Password Login Failure
+        console.error(err);
         this.submitted = false;
         this.submissionError = err;
     }

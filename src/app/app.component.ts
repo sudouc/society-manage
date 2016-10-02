@@ -25,7 +25,7 @@ export class AppComponent implements OnInit, OnDestroy {
         this.authState = auth;
         if (!auth) {
             // if this was a logout auth change, redirect to the login screen
-            console.log('User became unauthenticated, logged out?');
+            console.log('[AppComponent] User became unauthenticated');
             this.router.navigate(['/login']);
         }
     }
