@@ -26,6 +26,25 @@ export class LoginComponent implements OnInit {
 
     }
 
+    githubLogin() {
+        this.af.auth.login({
+            provider: AuthProviders.Github,
+            method: AuthMethods.Popup,
+        })
+            .then((data) => {
+                // Enter the user's info in the users table
+                // this.af.auth.subscribe(_auth => {
+                //     console.log(_auth.auth);
+                //     this.af.database.object('users/' + data.uid).set({
+                //         displayName: _auth.auth.displayName,
+                //         email: _auth.auth.email,
+                //         emailVerified: _auth.auth.emailVerified,
+                //         photoUrl: _auth.auth.photoURL
+                //     });
+                // });
+            });
+    }
+
     // On form submission, submit the user details to service for authentication
     onSubmit() {
         this.submitted = true;
@@ -43,13 +62,13 @@ export class LoginComponent implements OnInit {
 
     // Login success, moving on
     onSuccess(data) {
-        let redirectURL = localStorage.getItem('redirectUrl')
-        if (redirectURL === undefined) {
+        let redirectURL = localStorage.getItem('redirectUrl');
+        if (redirectURL) {
             this.router.navigate([redirectURL]);
         } else {
             this.router.navigate(['/members']);
         }
-        localStorage.setItem('redirectUrl', undefined);
+        localStorage.removeItem('redirectUrl');
     }
 
     // Notify the user of failure and get them to try again

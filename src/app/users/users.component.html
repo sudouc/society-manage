@@ -1,0 +1,23 @@
+<div class="twelve columns">
+    <md-card>
+        <md-toolbar color="primary">
+            <span>Users</span>
+        </md-toolbar>
+        <br>
+        <md-card-content>
+            <div style="overflow:scroll;">
+                <table class="u-full-width">
+                    <thead>
+                    </thead>
+                    <tbody>
+                        <tr class="hover" *ngFor="let user of users | async">
+                            <td>
+                                {{user | json}}
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </md-card-content>
+    </md-card>
+</div>

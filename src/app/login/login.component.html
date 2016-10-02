@@ -26,5 +26,6 @@
             <button md-button type="submit" [disabled]="!loginForm.form.valid || submitted">Login</button>
 
         </form>
+        <button md-button (click)="githubLogin()">Login With Github!</button>
     </md-card-content>
 </md-card>

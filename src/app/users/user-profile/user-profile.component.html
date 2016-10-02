@@ -1,0 +1,10 @@
+<p>
+    AccountInfo {{accountInfo|json}}
+</p>
+<p>
+    MemberInfo {{(memberInfo|async)?.memberObject|async|json}}
+</p>
+
+<div *ngFor="let payment of paymentsInfo|async">
+    PaymentsInfo {{payment.info|async|json}}
+</div>
