@@ -26,6 +26,7 @@ import { ExecutivesComponent } from './executives/executives.component';
 import { EditPaymentComponent } from './payments/edit-payment/edit-payment.component';
 import { UsersComponent } from './users/users.component';
 import { UserProfileComponent, UserProfileResolver } from './users/user-profile/user-profile.component';
+import { JoinComponent } from './users/join/join.component';
 
 @NgModule({
     declarations: [
@@ -38,6 +39,7 @@ import { UserProfileComponent, UserProfileResolver } from './users/user-profile/
         EditPaymentComponent,
         UsersComponent,
         UserProfileComponent,
+        JoinComponent,
     ],
     imports: [
         MaterializeModule,

@@ -6,6 +6,7 @@ import { PaymentsComponent } from './payments/payments.component';
 import { ExecutivesComponent } from './executives/executives.component';
 import { UsersComponent } from './users/users.component';
 import { UserProfileComponent, UserProfileResolver } from './users/user-profile/user-profile.component';
+import { JoinComponent } from './users/join/join.component';
 
 import { AuthGuard } from './auth-guard';
 
@@ -46,13 +47,18 @@ const routes: Routes = [
         canActivate: [AuthGuard]
     },
     {
-        path: 'profile', // User can see the member details we have about them
+        path: 'profile',            // User can see the member details we have about them
         component: UserProfileComponent,
         canActivate: [AuthGuard],
         resolve: {
             auth: UserProfileResolver
         }
     },
+    {
+        path: 'join/:token',        // For associating with an member record
+        component: JoinComponent,
+        canActivate: [AuthGuard]
+    }
 ];
 
 @NgModule({

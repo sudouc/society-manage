@@ -19,6 +19,7 @@ type Member {
 type User {
     info: UserInfo
     member: NonEmptyString | Null
+    temp_token: NonEmptyString | Null // When joining wih a member, this is where the User stores the member ID before they are allowed to associate with it
 }
 
 type UserInfo {
@@ -52,8 +53,14 @@ path /users/{uid} is User {
 }
 
 path /users/{uid}/member {
-    // Users may write their member id only if it does not exist yet, of if they are an Executive
-    write() { isUser(uid) && prior(this) != null || userIsExecutive() }
+    // Users may write their member id only if it does not exist yet, or if they are an Executive
+    write() { (isUser(uid) && prior(this) === null) || userIsExecutive() }
+    // TODO and if no other user has claimed it yet... (prevent duplicate members)
+}
+
+path /users/{uid}/temp_token {
+    // Users may write their temp_token, or if they are an Executive
+    write() { isUser(uid) || userIsExecutive() }
     // TODO and if no other user has claimed it yet... (prevent duplicate members)
 }
 
@@ -67,6 +74,16 @@ path /members/{member_id} is Member {
     read() { userIsMember(member_id) }
     // Can write if is executive
     write() { userIsExecutive() }
+}
+
+path /members/{member_id}/uid {
+    // User can write if 
+    // Their temp token matches this member 
+    // AND they don't already have a member ID
+    // AND the member does not already have an associated UID
+    // AND they are writing their UID 
+    // AND this is not a deletion
+    write() { userHasTempToken(member_id) && !userHasMember() && prior(this) === null && this === auth.uid }
 }
 
 path /transactions/{transaction_id} is Transaction {
@@ -91,6 +108,16 @@ isUser(uid) {
 // Is the user associated with the given member_id
 userIsMember(member_id) {
     return root.members[member_id].uid === auth.uid
+}
+
+// Is the user associated with the given member_id
+userHasTempToken(member_id) {
+    return root.users[auth.uid].temp_token === member_id
+}
+
+// Does the user have a member yet?
+userHasMember() {
+    return root.users[auth.uid].member != null
 }
 
 // Is the user an executive
