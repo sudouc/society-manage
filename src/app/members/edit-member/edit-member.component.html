@@ -1,29 +1,61 @@
-<div>
-    <div color="primary">Edit&nbsp;<span *ngIf="!model">Member</span><span *ngIf="model">{{model.firstname}} {{model.lastname}}</span></div>
-    <br>
-    <div>
+<div class="container">
+    <div class="row">
+        <h5>Edit&nbsp;<span *ngIf="!model">Member</span><span *ngIf="model">{{model.firstname}} {{model.lastname}}</span></h5>
+    </div>
+    <div class="row">
         <form *ngIf="model" #memberForm="ngForm" (ngSubmit)="onSubmit()">
-            
-            <button md-button color="primary" type="button" routerLink="/executive" routerLinkActive="active" [disabled]="!model?.$key || model.executive" (click)="makeExec(model)">Make Executive</button>
-            <p *ngIf="model.executive">This member is already part of the executive</p><br *ngIf="!model.executive">
-            <button md-button color="primary" type="button" routerLink="/payments/{{model.$key}}" routerLinkActive="active">View Payments</button>
-            <input type="text" class="full-width" name="firstname" placeholder="First Name" required [(ngModel)]="model.firstname"
-                #firstname="ngModel" [disabled]="submitted">
-            <input type="text" class="full-width" name="lastname" placeholder="Last Name" required [(ngModel)]="model.lastname" #lastname="ngModel"
-                [disabled]="submitted">
-            <input type="email" class="full-width" name="email" placeholder="Email" required [(ngModel)]="model.email" #email="ngModel"
-                [disabled]="submitted">
-            <input type="text" class="full-width" name="phone" placeholder="Phone" required [(ngModel)]="model.phone" #phone="ngModel"
-                [disabled]="submitted">
-            <input type="text" class="full-width" name="studentid" placeholder="Student ID" required [(ngModel)]="model.studentid"
-                #studentid="ngModel" [disabled]="submitted">
-            <input type="text" class="full-width" name="type" placeholder="Type" required [(ngModel)]="model.type" #type="ngModel"
-                [disabled]="submitted">
-            <input type="text" class="full-width" name="university" placeholder="University" required [(ngModel)]="model.university"
-                #university="ngModel" [disabled]="submitted">
 
-            <button md-button color="primary" type="submit" [disabled]="memberForm.form.pristine || !memberForm.form.valid">Save</button>
-            <button md-button color="accent" type="button" (click)="discard()" [disabled]="memberForm.form.pristine">Discard Changes</button>
+            <div class="row">
+
+                <div class="input-field col s6">
+                    <button class="btn waves-effect waves-light" type="button" routerLink="/executive" routerLinkActive="active" [disabled]="!model?.$key || model.executive"
+                        (click)="makeExec(model)">Make Executive</button><br>
+                    <small *ngIf="model.executive">Already An Executive</small>
+                    <small *ngIf="!model?.$key">Save First!</small>
+                    <br><br>
+                </div>
+                <div class="input-field col s6 right-align">
+                    <button class="btn waves-effect waves-light purple" type="button" routerLink="/payments/{{model.$key}}" routerLinkActive="active" [disabled]="!model?.$key">View Payments</button><br>
+                    <small *ngIf="!model?.$key">Save First!</small>
+                </div>
+
+                <div class="input-field col s12">
+                    <input type="text" name="firstname" required [(ngModel)]="model.firstname" #firstname="ngModel" [disabled]="submitted">
+                    <label [class.active]="model.firstname" for="firstname">First Name</label>
+                </div>
+
+                <div class="input-field col s12">
+                    <input type="text" name="lastname" required [(ngModel)]="model.lastname" #lastname="ngModel" [disabled]="submitted">
+                    <label [class.active]="model.lastname" for="lastname">Last Name</label>
+                </div>
+                <div class="input-field col s12">
+                    <input type="email" name="email" required [(ngModel)]="model.email" #email="ngModel" [disabled]="submitted">
+                    <label [class.active]="model.email" for="email">Email</label>
+                </div>
+                <div class="input-field col s12">
+                    <input type="text" name="phone" required [(ngModel)]="model.phone" #phone="ngModel" [disabled]="submitted">
+                    <label [class.active]="model.phone" for="phone">Phone</label>
+                </div>
+                <div class="input-field col s12">
+                    <input type="text" name="studentid" required [(ngModel)]="model.studentid" #studentid="ngModel" [disabled]="submitted">
+                    <label [class.active]="model.studentid" for="studentid">Student ID</label>
+                </div>
+                <div class="input-field col s12">
+                    <input type="text" name="type" required [(ngModel)]="model.type" #type="ngModel" [disabled]="submitted">
+                    <label [class.active]="model.type" for="type">Member Type</label>
+                </div>
+                <div class="input-field col s12">
+                    <input type="text" name="university" required [(ngModel)]="model.university" #university="ngModel" [disabled]="submitted">
+                    <label [class.active]="model.university" for="university">University</label>
+                </div>
+
+                <div class="col s6">
+                    <button class="btn waves-effect waves-light" type="button" (click)="discard()" [disabled]="memberForm.form.pristine">Discard Changes</button>
+                </div>
+                <div class="col s6 right-align">
+                    <button class="btn waves-effect waves-light" type="submit" name="action" [disabled]="memberForm.form.pristine || !memberForm.form.valid">Save</button>
+                </div>
+            </div>
         </form>
         <span *ngIf="!model">Please Select a Member or Click Add</span>
     </div>

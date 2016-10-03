@@ -1,76 +1,89 @@
 <div>
     <div class="container">
-        <div class="row">
-            <div class="col s6">
-                <h5>{{title}}</h5>
-            </div>
-            <div class="col s6 right-align">
-                <a class="waves-effect waves-light btn" (click)="add()">Add Member</a>
-            </div>
-        </div>
-    </div>
-    <br>
-    <div class="container">
-        <div class="row">
-            <table>
-                <thead>
-                    <tr>
-                        <th>
-                            First
-                        </th>
-                        <th>
-                            Last
-                        </th>
-                        <th>
-                            Uni
-                        </th>
-                        <th>
-                            StudentID
-                        </th>
-                        <th>
-                            Type
-                        </th>
-                        <th>
-                            Email
-                        </th>
-                        <th>
-                            Phone
-                        </th>
-                        <th>
-                            Exec
-                        </th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr class="hover" *ngFor="let member of members | async" (click)="select(member)">
-                        <td>
-                            {{member.firstname}}
-                        </td>
-                        <td>
-                            {{member.lastname}}
-                        </td>
-                        <td>
-                            {{member.university}}
-                        </td>
-                        <td>
-                            {{member.studentid}}
-                        </td>
-                        <td>
-                            {{member.type}}
-                        </td>
-                        <td>
-                            {{member.email}}
-                        </td>
-                        <td>
-                            {{member.phone}}
-                        </td>
-                        <td>
-                            <p *ngIf="member.executive">exec</p>
-                        </td>
-                    </tr>
-                </tbody>
-            </table>
+        <h4>{{title}}</h4>
+        <div class="fixed-action-btn" style="bottom: 45px; right: 24px;">
+            <button materialize="leanModal" (click)="add()" class="btn-floating btn-large red modal-trigger" data-target="edit">
+                    <i class="large material-icons">add</i>
+                </button>
         </div>
     </div>
 </div>
-<app-edit-member class="four columns" [member]="selectedMember"></app-edit-member>
+<br>
+<div class="container">
+    <div class="row">
+        <table class="highlight">
+            <thead>
+                <tr>
+                    <th>
+                        First
+                    </th>
+                    <th>
+                        Last
+                    </th>
+                    <th>
+                        Uni
+                    </th>
+                    <th>
+                        StudentID
+                    </th>
+                    <th>
+                        Type
+                    </th>
+                    <th>
+                        Email
+                    </th>
+                    <th>
+                        Phone
+                    </th>
+                    <th>
+                        Status
+                    </th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr class="hover" *ngFor="let member of members | async">
+                    <td>
+                        {{member.firstname}}
+                    </td>
+                    <td>
+                        {{member.lastname}}
+                    </td>
+                    <td>
+                        {{member.university}}
+                    </td>
+                    <td>
+                        {{member.studentid}}
+                    </td>
+                    <td>
+                        {{member.type}}
+                    </td>
+                    <td>
+                        {{member.email}}
+                    </td>
+                    <td>
+                        {{member.phone}}
+                    </td>
+                    <td>
+                        <i materialize="tooltip" data-position="top" data-delay="50" data-tooltip="Executive Member" class="material-icons tooltipped"
+                            *ngIf="member.executive">work</i>
+                        <i materialize="tooltip" data-position="top" data-delay="50" data-tooltip="Normal Member" class="material-icons tooltipped"
+                            *ngIf="!member.executive">perm_identity</i>
+                    </td>
+                    <td>
+                        <span materialize="tooltip" data-position="top" data-delay="50" data-tooltip="Edit">
+                            <button materialize="leanModal" class="waves-effect waves-teal btn-flat modal-trigger" data-target="edit" (click)="select(member)">
+                                <i class="material-icons">mode_edit</i>
+                            </button>
+                        </span>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+<!-- Modal Structure -->
+<div id="edit" class="modal">
+    <div class="modal-content">
+        <app-edit-member class="four columns " [member]="selectedMember "></app-edit-member>
+    </div>
+</div>

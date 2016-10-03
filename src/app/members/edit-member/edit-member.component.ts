@@ -37,15 +37,15 @@ export class EditMemberComponent implements OnInit, OnChanges {
     onSubmit() {
         this.submitted = true;
         if (!this.model.$key) {
-            this.af.database.list('/members/').push(this.model)
+            this.af.database.list('/members').push(this.model)
                 .then(data => {
                     this.model.$key = data.path.o[1];
                     this.submitted = false;
                 });
         } else {
-            let model = JSON.parse(JSON.stringify(this.model.$key));
+            let model = JSON.parse(JSON.stringify(this.model));
             delete model.$key;
-            this.af.database.object('/members/' + this.model.$key).set(model)
+            this.af.database.object('/members/' + this.model.$key).update(model)
                 .then(data => {
                     this.submitted = false;
                 });
