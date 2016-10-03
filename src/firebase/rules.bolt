@@ -1,0 +1,83 @@
+// === Types ===
+
+type NonEmptyString {
+  validate() { this.length > 0 }
+}
+
+type Member {
+    email: NonEmptyString
+    firstname: NonEmptyString
+    lastname: NonEmptyString
+    executive: Boolean
+    payments: Boolean[] | Null
+    phone: NonEmptyString
+    studentid: NonEmptyString
+    type: NonEmptyString
+    university: NonEmptyString
+    uid: NonEmptyString
+}
+
+type User {
+    info: UserInfo
+    member: NonEmptyString | Null
+}
+
+type UserInfo {
+    displayName: NonEmptyString
+    email: NonEmptyString
+    emailVerified: Boolean
+    photoUrl: NonEmptyString
+}
+
+type Transaction {
+    amount: Number
+    bankreference: NonEmptyString
+    date: NonEmptyString
+    member: NonEmptyString
+    type: NonEmptyString
+}
+
+type Executive {
+    position: NonEmptyString
+}
+
+// === Paths ===
+path / {
+    // Executives can read everything
+    read() { root.executives[root.users[auth.uid].member] != null }
+}
+
+path /members/{member_id} is Member {
+    // Users can see their member data if there is an associated UID
+    read() { userIsMember(member_id) }
+}
+
+path /users/{uid} is User {
+    // Read if user
+    read() { isUser(uid) }
+}
+
+path /users/{uid}/member {
+    // Users may write their member id only if it does not exist yet
+    write() { isUser(uid) && prior(this) != null }
+    // TODO and if no other user has claimed it yet... (prevent duplicate members)
+}
+
+path /transactions/{transaction_id} is Transaction[] {
+    // Users may read a transaction if they are associated with the member that made it
+    read() { userIsMember(prior(this).member) }
+}
+
+path /executives is Executive[] { }
+
+// === Functions ===
+
+// Is the user's UID the given UID
+isUser(uid) {
+  return auth != null && auth.uid == uid;
+}
+
+// Is the user associated with the given member_id
+userIsMember(member_id) {
+    return root.members[member_id].uid === auth.uid
+}

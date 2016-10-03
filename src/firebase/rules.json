@@ -1,0 +1,117 @@
+{
+  "rules": {
+    ".read": "root.child('executives').child(root.child('users').child(auth.uid).child('member').val()).val() != null",
+    "members": {
+      "$member_id": {
+        ".validate": "newData.hasChildren(['email', 'firstname', 'lastname', 'executive', 'phone', 'studentid', 'type', 'university', 'uid'])",
+        "email": {
+          ".validate": "newData.val().length > 0"
+        },
+        "firstname": {
+          ".validate": "newData.val().length > 0"
+        },
+        "lastname": {
+          ".validate": "newData.val().length > 0"
+        },
+        "executive": {
+          ".validate": "newData.isBoolean()"
+        },
+        "payments": {
+          "$key1": {
+            ".validate": "newData.isBoolean()"
+          },
+          ".validate": "newData.hasChildren()"
+        },
+        "phone": {
+          ".validate": "newData.val().length > 0"
+        },
+        "studentid": {
+          ".validate": "newData.val().length > 0"
+        },
+        "type": {
+          ".validate": "newData.val().length > 0"
+        },
+        "university": {
+          ".validate": "newData.val().length > 0"
+        },
+        "uid": {
+          ".validate": "newData.val().length > 0"
+        },
+        "$other": {
+          ".validate": "false"
+        },
+        ".read": "root.child('members').child($member_id).child('uid').val() == auth.uid"
+      }
+    },
+    "users": {
+      "$uid": {
+        ".validate": "newData.hasChildren(['info'])",
+        "info": {
+          ".validate": "newData.hasChildren(['displayName', 'email', 'emailVerified', 'photoUrl'])",
+          "displayName": {
+            ".validate": "newData.val().length > 0"
+          },
+          "email": {
+            ".validate": "newData.val().length > 0"
+          },
+          "emailVerified": {
+            ".validate": "newData.isBoolean()"
+          },
+          "photoUrl": {
+            ".validate": "newData.val().length > 0"
+          },
+          "$other": {
+            ".validate": "false"
+          }
+        },
+        "member": {
+          ".validate": "newData.val().length > 0",
+          ".write": "auth != null && auth.uid == $uid && data.val() != null"
+        },
+        "$other": {
+          ".validate": "false"
+        },
+        ".read": "auth != null && auth.uid == $uid"
+      }
+    },
+    "transactions": {
+      "$transaction_id": {
+        "$key2": {
+          ".validate": "newData.hasChildren(['amount', 'bankreference', 'date', 'member', 'type'])",
+          "amount": {
+            ".validate": "newData.isNumber()"
+          },
+          "bankreference": {
+            ".validate": "newData.val().length > 0"
+          },
+          "date": {
+            ".validate": "newData.val().length > 0"
+          },
+          "member": {
+            ".validate": "newData.val().length > 0"
+          },
+          "type": {
+            ".validate": "newData.val().length > 0"
+          },
+          "$other": {
+            ".validate": "false"
+          }
+        },
+        ".validate": "newData.hasChildren()",
+        ".read": "root.child('members').child(data.child('member').val()).child('uid').val() == auth.uid"
+      }
+    },
+    "executives": {
+      "$key3": {
+        ".validate": "newData.hasChildren(['position'])",
+        "position": {
+          ".validate": "newData.val().length > 0"
+        },
+        "$other": {
+          ".validate": "false"
+        }
+      },
+      ".validate": "newData.hasChildren()"
+    }
+  }
+}
