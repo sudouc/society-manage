@@ -3,7 +3,7 @@ import { Routes, RouterModule } from '@angular/router';
 import { LoginComponent } from './login/login.component';
 import { MembersComponent } from './members/members.component';
 import { PaymentsComponent } from './payments/payments.component';
-import { ExecutiveComponent } from './executive/executive.component';
+import { ExecutivesComponent } from './executives/executives.component';
 import { UsersComponent } from './users/users.component';
 import { UserProfileComponent, UserProfileResolver } from './users/user-profile/user-profile.component';
 
@@ -36,13 +36,8 @@ const routes: Routes = [
         canActivate: [AuthGuard]
     },
     {
-        path: 'executive',
-        component: ExecutiveComponent,
-        canActivate: [AuthGuard]
-    },
-    {
-        path: 'executive/:id', // This will be a trigger to add a user to the executive
-        component: ExecutiveComponent,
+        path: 'executives',
+        component: ExecutivesComponent,
         canActivate: [AuthGuard]
     },
     {

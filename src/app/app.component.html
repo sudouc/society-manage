@@ -10,7 +10,7 @@
         <!--Authenticated Menu-->
         <ul *ngIf="authState && ((memberInfo|async)?.memberObject|async)?.executive" class="left">
             <li routerLink="members" routerLinkActive="active"><a>Members</a></li>
-            <li routerLink="executive" routerLinkActive="active"><a>Executive</a></li>
+            <li routerLink="executives" routerLinkActive="active"><a>Executives</a></li>
             <li routerLink="payments" routerLinkActive="active"><a>Payments</a></li>
         </ul>
         <ul *ngIf="authState" class="right">

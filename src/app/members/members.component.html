@@ -1,14 +1,11 @@
-<div>
-    <div class="container">
-        <h4>{{title}}</h4>
-        <div class="fixed-action-btn" style="bottom: 45px; right: 24px;">
-            <button materialize="leanModal" (click)="add()" class="btn-floating btn-large red modal-trigger" data-target="edit">
+<div class="container">
+    <h4>{{title}}</h4>
+    <div class="fixed-action-btn" style="bottom: 45px; right: 24px;">
+        <button materialize="leanModal" (click)="add()" class="btn-floating btn-large red modal-trigger" data-target="edit">
                     <i class="large material-icons">add</i>
                 </button>
-        </div>
     </div>
 </div>
-<br>
 <div class="container">
     <div class="row">
         <table class="highlight">
@@ -41,7 +38,7 @@
                 </tr>
             </thead>
             <tbody>
-                <tr class="hover" *ngFor="let member of members | async">
+                <tr *ngFor="let member of members | async">
                     <td>
                         {{member.firstname}}
                     </td>
@@ -67,7 +64,7 @@
                         <i materialize="tooltip" data-position="top" data-delay="50" data-tooltip="Executive Member" class="material-icons tooltipped"
                             *ngIf="member.executive">work</i>
                         <i materialize="tooltip" data-position="top" data-delay="50" data-tooltip="Normal Member" class="material-icons tooltipped"
-                            *ngIf="!member.executive">perm_identity</i>
+                            *ngIf="!member.executive">person</i>
                     </td>
                     <td>
                         <span materialize="tooltip" data-position="top" data-delay="50" data-tooltip="Edit">

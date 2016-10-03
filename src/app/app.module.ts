@@ -22,7 +22,7 @@ import { LoginComponent } from './login/login.component';
 import { MembersComponent } from './members/members.component';
 import { EditMemberComponent } from './members/edit-member/edit-member.component';
 import { PaymentsComponent } from './payments/payments.component';
-import { ExecutiveComponent } from './executive/executive.component';
+import { ExecutivesComponent } from './executives/executives.component';
 import { EditPaymentComponent } from './payments/edit-payment/edit-payment.component';
 import { UsersComponent } from './users/users.component';
 import { UserProfileComponent, UserProfileResolver } from './users/user-profile/user-profile.component';
@@ -34,7 +34,7 @@ import { UserProfileComponent, UserProfileResolver } from './users/user-profile/
         MembersComponent,
         EditMemberComponent,
         PaymentsComponent,
-        ExecutiveComponent,
+        ExecutivesComponent,
         EditPaymentComponent,
         UsersComponent,
         UserProfileComponent,

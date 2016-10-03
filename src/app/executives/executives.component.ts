@@ -3,12 +3,13 @@ import { AngularFire } from 'angularfire2';
 import { Observable } from 'rxjs/Observable';
 
 @Component({
-    selector: 'app-executive',
-    templateUrl: './executive.component.html',
-    styleUrls: ['./executive.component.css']
+    selector: 'app-executives',
+    templateUrl: './executives.component.html',
+    styleUrls: ['./executives.component.css']
 })
-export class ExecutiveComponent implements OnInit {
+export class ExecutivesComponent implements OnInit {
 
+    title = 'Executive List';
     executiveMembers: Observable<any[]>;
     hasExecutive = true;
 
