@@ -32,7 +32,7 @@
                 </tr>
             </thead>
             <tbody>
-                <tr materialize="leanModal" class="modal-trigger" data-target="edit" *ngFor="let payment of payments | async" (click)="select(payment)">
+                <tr *ngFor="let payment of payments | async">
                     <td>
                         {{payment.$key}}
                     </td>
@@ -51,6 +51,13 @@
                     <td>
                         {{payment.type}}
                     </td>
+                    <td>
+                        <span materialize="tooltip" data-position="top" data-delay="50" data-tooltip="Edit">
+                            <button materialize="leanModal" class="waves-effect waves-teal btn-flat modal-trigger" data-target="edit" (click)="select(payment)">
+                                <i class="material-icons">mode_edit</i>
+                            </button>
+                        </span>
+                    </td>
                 </tr>
             </tbody>
             <div *ngIf="!hasPayments">
@@ -62,6 +69,6 @@
 <!-- Modal Structure -->
 <div id="edit" class="modal">
     <div class="modal-content">
-        <app-edit-payment class="three columns" [payment]="selectedPayment" [memberID]=""></app-edit-payment>
+        <app-edit-payment class="three columns" [payment]="selectedPayment"></app-edit-payment>
     </div>
 </div>

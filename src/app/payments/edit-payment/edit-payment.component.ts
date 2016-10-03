@@ -15,8 +15,6 @@ export class EditPaymentComponent implements OnInit, OnChanges {
 
     @Input()
     payment;
-    @Input()
-    memberID; // the id of the member that this transaction will be for
 
     // variable to get the form
     @ViewChild('paymentForm') form: NgForm;
