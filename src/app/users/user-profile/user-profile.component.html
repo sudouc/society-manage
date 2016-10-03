@@ -54,6 +54,7 @@
                         <table class="striped">
                             <thead>
                                 <tr>
+                                    <th data-field="reference">Reference</th>
                                     <th data-field="date">Date</th>
                                     <th data-field="amount">Amount</th>
                                     <th data-field="type">Type</th>
@@ -61,6 +62,7 @@
                             </thead>
                             <tbody>
                                 <tr *ngFor="let payment of paymentsInfo|async">
+                                    <td>{{(payment.info|async)?.$key}}</td>
                                     <td>{{(payment.info|async)?.date}}</td>
                                     <td>${{(payment.info|async)?.amount}}</td>
                                     <td>{{(payment.info|async)?.type}}</td>
