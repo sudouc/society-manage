@@ -1,5 +1,4 @@
 // === Types ===
-
 type NonEmptyString {
   validate() { this.length > 0 }
 }
@@ -14,7 +13,7 @@ type Member {
     studentid: NonEmptyString
     type: NonEmptyString
     university: NonEmptyString
-    uid: NonEmptyString
+    uid: NonEmptyString | Null
 }
 
 type User {
@@ -44,16 +43,11 @@ type Executive {
 // === Paths ===
 path / {
     // Executives can read everything
-    read() { root.executives[root.users[auth.uid].member] != null }
-}
-
-path /members/{member_id} is Member {
-    // Users can see their member data if there is an associated UID
-    read() { userIsMember(member_id) }
+    read() { userIsExecutive() }
 }
 
 path /users/{uid} is User {
-    // Read if user
+    // Users may read their own information
     read() { isUser(uid) }
 }
 
@@ -63,12 +57,25 @@ path /users/{uid}/member {
     // TODO and if no other user has claimed it yet... (prevent duplicate members)
 }
 
+path /users/{uid}/info {
+    // Users may write their own info
+    write() { isUser(uid) }
+}
+
+path /members/{member_id} is Member {
+    // Users can see their member data if there is an associated UID
+    read() { userIsMember(member_id) }
+}
+
 path /transactions/{transaction_id} is Transaction[] {
-    // Users may read a transaction if they are associated with the member that made it
+    // Users may read a transaction if they are the member that made it
     read() { userIsMember(prior(this).member) }
 }
 
-path /executives is Executive[] { }
+path /executives is Executive[] { 
+    // Executives may add other executives
+    write() { userIsExecutive() }
+}
 
 // === Functions ===
 
@@ -80,4 +87,9 @@ isUser(uid) {
 // Is the user associated with the given member_id
 userIsMember(member_id) {
     return root.members[member_id].uid === auth.uid
+}
+
+// Is the user an executive
+userIsExecutive() {
+    root.executives[root.users[auth.uid].member] != null
 }

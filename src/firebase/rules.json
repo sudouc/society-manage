@@ -1,9 +1,41 @@
 {
   "rules": {
     ".read": "root.child('executives').child(root.child('users').child(auth.uid).child('member').val()).val() != null",
+    "users": {
+      "$uid": {
+        ".validate": "newData.hasChildren(['info'])",
+        "info": {
+          ".validate": "newData.hasChildren(['displayName', 'email', 'emailVerified', 'photoUrl'])",
+          "displayName": {
+            ".validate": "newData.val().length > 0"
+          },
+          "email": {
+            ".validate": "newData.val().length > 0"
+          },
+          "emailVerified": {
+            ".validate": "newData.isBoolean()"
+          },
+          "photoUrl": {
+            ".validate": "newData.val().length > 0"
+          },
+          "$other": {
+            ".validate": "false"
+          },
+          ".write": "auth != null && auth.uid == $uid"
+        },
+        "member": {
+          ".validate": "newData.val().length > 0",
+          ".write": "auth != null && auth.uid == $uid && data.val() != null"
+        },
+        "$other": {
+          ".validate": "false"
+        },
+        ".read": "auth != null && auth.uid == $uid"
+      }
+    },
     "members": {
       "$member_id": {
-        ".validate": "newData.hasChildren(['email', 'firstname', 'lastname', 'executive', 'phone', 'studentid', 'type', 'university', 'uid'])",
+        ".validate": "newData.hasChildren(['email', 'firstname', 'lastname', 'executive', 'phone', 'studentid', 'type', 'university'])",
         "email": {
           ".validate": "newData.val().length > 0"
         },
@@ -43,37 +75,6 @@
         ".read": "root.child('members').child($member_id).child('uid').val() == auth.uid"
       }
     },
-    "users": {
-      "$uid": {
-        ".validate": "newData.hasChildren(['info'])",
-        "info": {
-          ".validate": "newData.hasChildren(['displayName', 'email', 'emailVerified', 'photoUrl'])",
-          "displayName": {
-            ".validate": "newData.val().length > 0"
-          },
-          "email": {
-            ".validate": "newData.val().length > 0"
-          },
-          "emailVerified": {
-            ".validate": "newData.isBoolean()"
-          },
-          "photoUrl": {
-            ".validate": "newData.val().length > 0"
-          },
-          "$other": {
-            ".validate": "false"
-          }
-        },
-        "member": {
-          ".validate": "newData.val().length > 0",
-          ".write": "auth != null && auth.uid == $uid && data.val() != null"
-        },
-        "$other": {
-          ".validate": "false"
-        },
-        ".read": "auth != null && auth.uid == $uid"
-      }
-    },
     "transactions": {
       "$transaction_id": {
         "$key2": {
@@ -111,7 +112,8 @@
           ".validate": "false"
         }
       },
-      ".validate": "newData.hasChildren()"
+      ".validate": "newData.hasChildren()",
+      ".write": "newData.parent().child('executives').child(newData.parent().child('users').child(auth.uid).child('member').val()).val() != null"
     }
   }
 }
