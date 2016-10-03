@@ -1,10 +1,84 @@
-<p>
-    AccountInfo {{accountInfo|json}}
-</p>
-<p>
-    MemberInfo {{(memberInfo|async)?.memberObject|async|json}}
-</p>
-
-<div *ngFor="let payment of paymentsInfo|async">
-    PaymentsInfo {{payment.info|async|json}}
+<div class="container">
+    <div class="row">
+        <div class="col s12 m6">
+            <div class="card">
+                <div class="card-content">
+                    <span class="card-title">Me (From Github)</span>
+                    <div class="progress row" *ngIf="!(accountInfo|async)">
+                        <div class="indeterminate"></div>
+                    </div>
+                    <div class="row" *ngIf="accountInfo|async">
+                        <div class="col s3" *ngIf="(accountInfo|async)?.info.photoUrl">
+                            <img src="{{(accountInfo|async)?.info.photoUrl}}" alt="" class="circle responsive-img">
+                            <!-- notice the "circle" class -->
+                        </div>
+                        <div class="col s9">
+                            <p><strong>Name:</strong> {{(accountInfo|async)?.info.displayName}}</p>
+                            <p><strong>Email:</strong> {{(accountInfo|async)?.info.email}}</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col s12 m6">
+            <div class="card">
+                <div class="card-content">
+                    <span class="card-title">My Membership</span>
+                    <div class="progress row" *ngIf="!(memberInfo|async)">
+                        <div class="indeterminate"></div>
+                    </div>
+                    <div class="row valign-wrapper" *ngIf="(accountInfo|async)?.member && ((memberInfo|async)?.memberObject|async)">
+                        <div class="col s12">
+                            <p><strong>Name:</strong> {{((memberInfo|async)?.memberObject|async)?.firstname}} {{((memberInfo|async)?.memberObject|async)?.lastname}}</p>
+                            <p><strong>Email:</strong> {{((memberInfo|async)?.memberObject|async)?.email}}</p>
+                            <p><strong>Phone:</strong> {{((memberInfo|async)?.memberObject|async)?.phone}}</p>
+                            <p><strong>StudentID:</strong> {{((memberInfo|async)?.memberObject|async)?.studentid}}</p>
+                            <p><strong>University:</strong> {{((memberInfo|async)?.memberObject|async)?.university}}</p>
+                        </div>
+                    </div>
+                    <div class="row valign-wrapper" *ngIf="!(accountInfo|async)?.member && (accountInfo|async)">
+                        <div class="col s12">
+                            <p>No member record (yet!)</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col s12">
+            <div class="card">
+                <div class="card-content">
+                    <span class="card-title">My Payments</span>
+                    <div class="row">
+                        <table class="striped">
+                            <thead>
+                                <tr>
+                                    <th data-field="date">Date</th>
+                                    <th data-field="amount">Amount</th>
+                                    <th data-field="type">Type</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr *ngFor="let payment of paymentsInfo|async">
+                                    <td>{{(payment.info|async)?.date}}</td>
+                                    <td>${{(payment.info|async)?.amount}}</td>
+                                    <td>{{(payment.info|async)?.type}}</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div class="row valign-wrapper" *ngIf="!(accountInfo|async)?.member || !(paymentsInfo|async)">
+                        <!--TODO actually show this on an empty list-->
+                        <div class="col s12">
+                            <p>Nothing to show</p>
+                        </div>
+                    </div>
+                    <div class="progress row" *ngIf="!(paymentsInfo|async) && paymentsLoading">
+                        <div class="indeterminate"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 </div>

@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { AngularFire } from 'angularfire2';
 
@@ -7,18 +7,33 @@ import { AngularFire } from 'angularfire2';
     templateUrl: './app.component.html',
     styleUrls: ['./app.component.css']
 })
-export class AppComponent implements OnInit, OnDestroy {
+export class AppComponent implements OnInit {
 
-    private subscription;                       // Subscription to the user Auth State
-    title: string = 'SUDO Memberships';         // Title of the app
-    authState;                                       // App auth state
+    title: string = 'SUDO Memberships';             // Title of the app
+    authState;                                      // App auth state
+    memberInfo;                                     // Info about the member associated with this user
 
     constructor(private af: AngularFire, private router: Router) { }
 
     ngOnInit() {
-        this.subscription = this.af.auth.subscribe( // Subscribe to auth state changes
-            auth => this.authChange(auth)
+        this.af.auth.subscribe(                      // Subscribe to auth state changes
+            auth => {
+                this.authChange(auth);
+                this.subscribeMember(auth);
+            }
         );
+    }
+
+    subscribeMember(data) {
+        if (data && data.auth) {
+            let auth = data.auth;
+            this.memberInfo = this.af.database.object('/users/' + auth.uid)     // Get the info about the Member
+                .map((_user) => {
+                    _user.memberObject = this.af.database.object('/members/' + _user.member);
+
+                    return _user;
+                });
+        }
     }
 
     authChange(auth) {
@@ -32,9 +47,5 @@ export class AppComponent implements OnInit, OnDestroy {
 
     logout() {
         this.af.auth.logout(); // Firebase logout
-    }
-
-    ngOnDestroy() {
-        this.subscription.unsubscribe();        // Unsubscribe from auth state
     }
 }

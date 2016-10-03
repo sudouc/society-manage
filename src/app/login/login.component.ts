@@ -55,6 +55,17 @@ export class LoginComponent implements OnInit {
                 provider: AuthProviders.Password,
                 method: AuthMethods.Password,
             })
+            .then((data) => {                       // Update user/{uid}/info in firebase
+                this.af.auth.subscribe(_auth => {
+                    console.log(_auth.auth);
+                    this.af.database.object('users/' + data.uid + '/info').set({
+                        displayName: _auth.auth.displayName,
+                        email: _auth.auth.email,
+                        emailVerified: _auth.auth.emailVerified,
+                        photoUrl: _auth.auth.photoURL
+                    });
+                });
+            })
             .then(auth =>                           // On success call the success method
                 this.authSuccess(auth)
             )
@@ -69,7 +80,7 @@ export class LoginComponent implements OnInit {
             if (redirectURL) {
                 this.router.navigate([redirectURL]);
             } else {
-                this.router.navigate(['/members']);
+                this.router.navigate(['/profile']);
             }
             localStorage.removeItem('redirectUrl');
         }

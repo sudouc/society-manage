@@ -2,6 +2,7 @@ import { Component, OnInit, Injectable } from '@angular/core';
 import { Router, ActivatedRoute, Resolve, ActivatedRouteSnapshot } from '@angular/router';
 import { AngularFire, FirebaseAuthState, FirebaseObjectObservable } from 'angularfire2';
 import { Observable, Subscription } from 'rxjs/Rx';
+import { AuthGuard } from '../../auth-guard';
 
 @Component({
     selector: 'app-user-profile',
@@ -14,6 +15,8 @@ export class UserProfileComponent implements OnInit {
     memberInfo: Observable<any>;
     paymentsInfo: Observable<any>;
 
+    paymentsLoading: boolean = true;   // Flag whether or not the payments are still loading
+
     constructor(
         private af: AngularFire,
         private route: ActivatedRoute,
@@ -24,21 +27,15 @@ export class UserProfileComponent implements OnInit {
         this.route.data.forEach((data: { auth: any }) => {
 
             if (data.auth) {
-
                 let auth = data.auth.auth;
-                this.accountInfo = {
-                    displayName: auth.displayName,
-                    email: auth.email,
-                    emailVerified: auth.emailVerified,
-                    photoUrl: auth.photoURL
-                }; // info to display the info from provider
 
-                // Subscribe to info about the member
-                this.memberInfo = this.af.database.object('/users/' + auth.uid)
+                this.accountInfo = this.af.database.object('/users/' + auth.uid);   // Show the info from Github
+
+                this.memberInfo = this.af.database.object('/users/' + auth.uid)     // Show the info about the Member
                     .map((_user) => {
                         _user.memberObject = this.af.database.object('/members/' + _user.member);
-                        // Call to subscribe to info about the member's payments
-                        this.subscribePayments(_user.member);
+
+                        this.subscribePayments(_user.member);                       // Subscribe to the list of payments made by this member
                         return _user;
                     });
 
@@ -47,16 +44,22 @@ export class UserProfileComponent implements OnInit {
     }
 
     subscribePayments(memberKey) {
-        // Subscribe to info about the members payments
-        this.paymentsInfo = this.af.database.list('/members/' + memberKey + '/payments')
-            .map((_payments) => {
+        this.paymentsLoading = false;
+        if (memberKey) {                                                            // Only ask for payments if the user is a member
 
-                return _payments.map((_payment) => {
+            this.paymentsInfo =
+                this.af.database.list('/members/' + memberKey + '/payments')        // Get the list of payments
+                    .map((_payments) => {
 
-                    _payment.info = this.af.database.object('/transactions/' + _payment.$key);
-                    return _payment;
-                });
-            });
+                        return _payments.map((_payment) => {
+
+                            _payment.info = this.af.database.object('/transactions/' + _payment.$key);
+                            return _payment;
+                        });
+                    });
+        } else {
+            this.paymentsLoading = false;
+        }
     }
 
 }
@@ -65,19 +68,13 @@ export class UserProfileComponent implements OnInit {
 @Injectable()
 export class UserProfileResolver implements Resolve<any> {
     constructor(
-        private af: AngularFire
+        private ag: AuthGuard,
     ) { }
 
-    resolve(route: ActivatedRouteSnapshot): Observable<FirebaseAuthState | boolean> {
-        let sub = this.af.auth.map(
-            data => {
-                if (data) {
-                    return data;
-                }
-                return false;
-            }
-        );
-        return sub.first();
+    resolve(route: ActivatedRouteSnapshot): Observable<FirebaseAuthState | boolean> | any {
+        // return the auth that is being used by AuthGuard
+        // AuthGuard is already subscribed to it
+        return this.ag.auth;
     }
 }
 

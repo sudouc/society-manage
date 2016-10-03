@@ -11,7 +11,7 @@ import { AngularFire } from 'angularfire2';
 export class AuthGuard implements CanActivate {
 
     private subscription = undefined;
-    private auth;            // app auth state
+    public auth;            // app auth state
 
     constructor(private af: AngularFire, private router: Router) { }
 
@@ -32,8 +32,8 @@ export class AuthGuard implements CanActivate {
 
             if (anon_routes.indexOf(state.url) > -1) {
                 console.log('[AuthGuard] DISALLOW: ' + state.url + ' because already authenticated');
-                // Nav to member management
-                this.router.navigate(['/members']);
+                // Nav to user profile
+                this.router.navigate(['/profile']);
                 return false;
             }
             console.log('[AuthGuard] canActivate ALLOW: ' + state.url + ' because already authenticated');
