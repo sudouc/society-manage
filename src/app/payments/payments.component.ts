@@ -10,6 +10,7 @@ import { Observable } from 'rxjs/Observable';
 })
 export class PaymentsComponent implements OnInit {
 
+    title = 'Payments';
     payments: Observable<any[]>;
     hasPayments = true;
     selectedPayment;

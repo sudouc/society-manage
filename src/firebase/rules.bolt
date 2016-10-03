@@ -52,8 +52,8 @@ path /users/{uid} is User {
 }
 
 path /users/{uid}/member {
-    // Users may write their member id only if it does not exist yet
-    write() { isUser(uid) && prior(this) != null }
+    // Users may write their member id only if it does not exist yet, of if they are an Executive
+    write() { isUser(uid) && prior(this) != null || userIsExecutive() }
     // TODO and if no other user has claimed it yet... (prevent duplicate members)
 }
 
@@ -65,15 +65,19 @@ path /users/{uid}/info {
 path /members/{member_id} is Member {
     // Users can see their member data if there is an associated UID
     read() { userIsMember(member_id) }
+    // Can write if is executive
+    write() { userIsExecutive() }
 }
 
-path /transactions/{transaction_id} is Transaction[] {
+path /transactions/{transaction_id} is Transaction {
     // Users may read a transaction if they are the member that made it
     read() { userIsMember(prior(this).member) }
+    // Can write if is executive
+    write() { userIsExecutive() }
 }
 
 path /executives is Executive[] { 
-    // Executives may add other executives
+    // Can write if is executive
     write() { userIsExecutive() }
 }
 

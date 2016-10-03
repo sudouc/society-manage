@@ -1,64 +1,67 @@
-<div class="nine columns">
-    <div>
-        <div color="primary">
-            <span>Payments</span>
-            <span class="fill-width"></span>
-            <button (click)="add()">+ Add Payment</button>
-        </div>
-        <br>
-        <div>
-            <div style="overflow:scroll;">
-                <table class="u-full-width">
-                    <thead>
-                        <tr>
-                            <th>
-                                ID
-                            </th>
-                            <th>
-                                Date
-                            </th>
-                            <th>
-                                Payer
-                            </th>
-                            <th>
-                                Amount
-                            </th>
-                            <th>
-                                Bank Ref
-                            </th>
-                            <th>
-                                Type
-                            </th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr class="hover" *ngFor="let payment of payments | async" (click)="select(payment)">
-                            <td>
-                                {{payment.$key}}
-                            </td>
-                            <td>
-                                {{payment.date}}
-                            </td>
-                            <td>
-                                {{(payment.memberObject | async)?.firstname}} {{(payment.memberObject | async)?.lastname}}
-                            </td>
-                            <td>
-                                {{payment.amount}}
-                            </td>
-                            <td>
-                                {{payment.bankreference}}
-                            </td>
-                            <td>
-                                {{payment.type}}
-                            </td>
-                        </tr>
-                    </tbody>
-                    <div *ngIf="!hasPayments">
-                        <p>No payments to show</p>
-                    </div>
-                </table>
-            </div>
-        </div>
+<div class="container">
+    <h4>{{title}}</h4>
+    <div class="fixed-action-btn" style="bottom: 45px; right: 24px;">
+        <button materialize="leanModal" (click)="add()" class="btn-floating btn-large red modal-trigger" data-target="edit">
+                    <i class="large material-icons">add</i>
+                </button>
     </div>
 </div>
-<app-edit-payment class="three columns" [payment]="selectedPayment" [memberID]=""></app-edit-payment>
+<div class="container">
+    <div class="row">
+        <table class="highlight">
+            <thead>
+                <tr>
+                    <th>
+                        ID
+                    </th>
+                    <th>
+                        Date
+                    </th>
+                    <th>
+                        Payer
+                    </th>
+                    <th>
+                        Amount
+                    </th>
+                    <th>
+                        Bank Ref
+                    </th>
+                    <th>
+                        Type
+                    </th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr materialize="leanModal" class="modal-trigger" data-target="edit" *ngFor="let payment of payments | async" (click)="select(payment)">
+                    <td>
+                        {{payment.$key}}
+                    </td>
+                    <td>
+                        {{payment.date}}
+                    </td>
+                    <td>
+                        {{(payment.memberObject | async)?.firstname}} {{(payment.memberObject | async)?.lastname}}
+                    </td>
+                    <td>
+                        ${{payment.amount}}
+                    </td>
+                    <td>
+                        {{payment.bankreference}}
+                    </td>
+                    <td>
+                        {{payment.type}}
+                    </td>
+                </tr>
+            </tbody>
+            <div *ngIf="!hasPayments">
+                <p>No payments to show</p>
+            </div>
+        </table>
+    </div>
+</div>
+<!-- Modal Structure -->
+<div id="edit" class="modal">
+    <div class="modal-content">
+        <app-edit-payment class="three columns" [payment]="selectedPayment" [memberID]=""></app-edit-payment>
+    </div>
+</div>

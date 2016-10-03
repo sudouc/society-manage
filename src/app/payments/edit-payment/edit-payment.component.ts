@@ -63,7 +63,7 @@ export class EditPaymentComponent implements OnInit, OnChanges {
                     this.submitted = false;
                 });
             // Add the transaction to the member's transaction list
-            this.af.database.object('/members/' + this.model.member.$key + '/payments/' + this.model.$key).set(true);
+            this.af.database.object('/members/' + this.model.member + '/payments/' + this.model.$key).set(true);
         } else { // finally, payment has member but no key
             this.af.database.list('/transactions/').push(this.model)
                 .then(data => {
