@@ -29,8 +29,9 @@ export class AppComponent implements OnInit {
             let auth = data.auth;
             this.memberInfo = this.af.database.object('/users/' + auth.uid)     // Get the info about the Member
                 .map((_user) => {
-                    _user.memberObject = this.af.database.object('/members/' + _user.member);
-
+                    if (_user.member) {
+                        _user.memberObject = this.af.database.object('/members/' + _user.member);
+                    }
                     return _user;
                 });
         }
