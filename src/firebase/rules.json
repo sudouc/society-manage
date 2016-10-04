@@ -27,7 +27,7 @@
           ".validate": "newData.val().length > 0",
           ".write": "auth != null && auth.uid == $uid && data.val() == null || newData.parent().parent().parent().child('executives').child(newData.parent().parent().parent().child('users').child(auth.uid).child('member').val()).val() != null"
         },
-        "temp_token": {
+        "join_token": {
           ".validate": "newData.val().length > 0",
           ".write": "auth != null && auth.uid == $uid || newData.parent().parent().parent().child('executives').child(newData.parent().parent().parent().child('users').child(auth.uid).child('member').val()).val() != null"
         },
@@ -72,7 +72,7 @@
         },
         "uid": {
           ".validate": "newData.val().length > 0",
-          ".write": "newData.parent().parent().parent().child('users').child(auth.uid).child('temp_token').val() == $member_id && !(newData.parent().parent().parent().child('users').child(auth.uid).child('member').val() != null) && data.val() == null && newData.val() == auth.uid"
+          ".write": "newData.parent().parent().parent().child('users').child(auth.uid).child('join_token').val() == $member_id && !(newData.parent().parent().parent().child('users').child(auth.uid).child('member').val() != null) && data.val() == null && newData.val() == auth.uid"
         },
         "$other": {
           ".validate": "false"
@@ -118,6 +118,12 @@
       },
       ".validate": "newData.hasChildren()",
       ".write": "newData.parent().child('executives').child(newData.parent().child('users').child(auth.uid).child('member').val()).val() != null"
+    },
+    "invitations": {
+      "$member_id": {
+        ".read": "auth != null && data.val() != null",
+        ".write": "newData.parent().parent().child('members').child($member_id).child('uid').val() == auth.uid && newData.val() == null || newData.parent().parent().child('executives').child(newData.parent().parent().child('users').child(auth.uid).child('member').val()).val() != null"
+      }
     }
   }
 }

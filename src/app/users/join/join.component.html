@@ -1,3 +1,10 @@
 <p>
   join works!
 </p>
+{{accountInfo|async|json}}
+<br>
+{{invitation|json}}
+<br>
+<div *ngIf="(accountInfo|async)?.member">Not eligible for an member invite, already associated with a member</div>
+<div *ngIf="!(accountInfo|async)?.member && (invitation)">You are eligible to accept this invite!</div>
+<div *ngIf="loadedInvite && !invitation">This is not an invite</div>

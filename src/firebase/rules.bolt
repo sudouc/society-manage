@@ -19,7 +19,7 @@ type Member {
 type User {
     info: UserInfo
     member: NonEmptyString | Null
-    temp_token: NonEmptyString | Null // When joining wih a member, this is where the User stores the member ID before they are allowed to associate with it
+    join_token: NonEmptyString | Null // When joining wih a member, this is where the User stores the member ID before they are allowed to associate with it
 }
 
 type UserInfo {
@@ -41,6 +41,12 @@ type Executive {
     position: NonEmptyString
 }
 
+type Invitation {
+    // Invitation for users to accept to associate with a member
+    // The invite key is the ID of the member to associate with
+    message: NonEmptyString
+}
+
 // === Paths ===
 path / {
     // Executives can read everything
@@ -58,8 +64,8 @@ path /users/{uid}/member {
     // TODO and if no other user has claimed it yet... (prevent duplicate members)
 }
 
-path /users/{uid}/temp_token {
-    // Users may write their temp_token, or if they are an Executive
+path /users/{uid}/join_token {
+    // Users may write their join_token, or if they are an Executive
     write() { isUser(uid) || userIsExecutive() }
     // TODO and if no other user has claimed it yet... (prevent duplicate members)
 }
@@ -78,12 +84,12 @@ path /members/{member_id} is Member {
 
 path /members/{member_id}/uid {
     // User can write if 
-    // Their temp token matches this member 
+    // Their join token matches this member 
     // AND they don't already have a member ID
     // AND the member does not already have an associated UID
     // AND they are writing their UID 
     // AND this is not a deletion
-    write() { userHasTempToken(member_id) && !userHasMember() && prior(this) === null && this === auth.uid }
+    write() { userHasJoinToken(member_id) && !userHasMember() && prior(this) === null && this === auth.uid }
 }
 
 path /transactions/{transaction_id} is Transaction {
@@ -96,6 +102,14 @@ path /transactions/{transaction_id} is Transaction {
 path /executives is Executive[] { 
     // Can write if is executive
     write() { userIsExecutive() }
+}
+
+path /invitations/{member_id} {
+    // All authenticated users may read individual invitations
+    // ( the security here is only that nobody else who isn't associated with a member knows the key)
+    read() { auth != null && prior(this) != null}
+    // User may only delete here if they have accepted the invite they are deleting, or they are an executive
+    write() { (userIsMember(member_id) && this === null) || userIsExecutive() }
 }
 
 // === Functions ===
@@ -111,8 +125,8 @@ userIsMember(member_id) {
 }
 
 // Is the user associated with the given member_id
-userHasTempToken(member_id) {
-    return root.users[auth.uid].temp_token === member_id
+userHasJoinToken(member_id) {
+    return root.users[auth.uid].join_token === member_id
 }
 
 // Does the user have a member yet?
