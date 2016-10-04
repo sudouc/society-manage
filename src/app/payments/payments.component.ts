@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Params } from '@angular/router';
-import { AngularFire, FirebaseListObservable, FirebaseObjectObservable } from 'angularfire2';
+import { AngularFire, FirebaseObjectObservable } from 'angularfire2';
 import { Observable } from 'rxjs/Observable';
 
 @Component({
@@ -20,9 +20,9 @@ export class PaymentsComponent implements OnInit {
     constructor(private af: AngularFire, private route: ActivatedRoute) { }
 
     ngOnInit() {
-        // get the employee from the url
+        // get the member id from the url
         this.route.params.forEach((params: Params) => {
-            let id = params['id']; // (+) converts string 'id' to a number
+            let id = params['id'];
             // Fill with payments from a single member (or all, if id is null)
             this.id = id;
             this.member = this.af.database.object('/members/' + id); // get member
