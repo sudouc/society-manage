@@ -33,8 +33,9 @@ export class UserProfileComponent implements OnInit {
 
                 this.memberInfo = this.af.database.object('/users/' + auth.uid)     // Show the info about the Member
                     .map((_user) => {
-                        _user.memberObject = this.af.database.object('/members/' + _user.member);
-
+                        if (_user.member) {
+                            _user.memberObject = this.af.database.object('/members/' + _user.member);
+                        }
                         this.subscribePayments(_user.member);                       // Subscribe to the list of payments made by this member
                         return _user;
                     });
