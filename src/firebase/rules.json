@@ -39,7 +39,7 @@
     },
     "members": {
       "$member_id": {
-        ".validate": "newData.hasChildren(['email', 'firstname', 'lastname', 'executive', 'phone', 'studentid', 'type', 'university'])",
+        ".validate": "newData.hasChildren(['email', 'firstname', 'lastname', 'phone', 'studentid', 'type', 'university'])",
         "email": {
           ".validate": "newData.val().length > 0"
         },

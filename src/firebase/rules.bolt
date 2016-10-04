@@ -7,7 +7,7 @@ type Member {
     email: NonEmptyString
     firstname: NonEmptyString
     lastname: NonEmptyString
-    executive: Boolean
+    executive: Boolean | Null
     payments: Boolean[] | Null
     phone: NonEmptyString
     studentid: NonEmptyString
