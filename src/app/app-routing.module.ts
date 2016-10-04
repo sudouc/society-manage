@@ -57,7 +57,10 @@ const routes: Routes = [
     {
         path: 'join/:token',        // For associating with an member record
         component: JoinComponent,
-        canActivate: [AuthGuard]
+        canActivate: [AuthGuard],
+        resolve: {
+            auth: UserProfileResolver
+        }
     }
 ];
 
