@@ -5,7 +5,7 @@
       "$uid": {
         ".validate": "newData.hasChildren(['info'])",
         "info": {
-          ".validate": "newData.hasChildren(['displayName', 'email', 'emailVerified', 'photoUrl'])",
+          ".validate": "newData.hasChildren(['email', 'emailVerified', 'photoUrl'])",
           "displayName": {
             ".validate": "newData.val().length > 0"
           },

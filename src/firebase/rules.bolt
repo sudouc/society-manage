@@ -23,7 +23,7 @@ type User {
 }
 
 type UserInfo {
-    displayName: NonEmptyString
+    displayName: NonEmptyString | Null
     email: NonEmptyString
     emailVerified: Boolean
     photoUrl: NonEmptyString
