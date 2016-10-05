@@ -2,6 +2,8 @@ import { Component, OnInit, Input, SimpleChange, OnChanges, ViewChild } from '@a
 import { AngularFire } from 'angularfire2';
 import { NgForm } from '@angular/forms';
 
+declare let Clipboard: any; // Clipboardjs is imported through a webpack script, this is just to avoid linting errors
+
 @Component({
     selector: 'app-edit-member',
     templateUrl: './edit-member.component.html',
@@ -11,6 +13,7 @@ export class EditMemberComponent implements OnInit, OnChanges {
 
     model; // stores info about the member
     submitted = false;
+    inviteLink; // a link for the member to be invited
 
     @Input()
     member;
@@ -21,11 +24,14 @@ export class EditMemberComponent implements OnInit, OnChanges {
     constructor(private af: AngularFire) { }
 
     ngOnInit() {
+        new Clipboard('.copybtn'); // tell clipboard js to grab the copy button
     }
 
     ngOnChanges(changes: { [propName: string]: SimpleChange }) {
         // Clone for resetting when clicking discard
         this.cloneModel();
+        // clear any invite link
+        this.inviteLink = null;
     }
 
     cloneModel() {
@@ -62,6 +68,16 @@ export class EditMemberComponent implements OnInit, OnChanges {
         this.af.database.object('/executives/' + model.$key).set({ 'position': 'unset' });
         // Indicate this member is executive
         this.af.database.object('/members/' + model.$key).update({ 'executive': true });
+    }
+
+    makeLinkInvite() {
+        // Make an invite entry in the database
+        this.af.database.object('/invitations/' + this.model.$key + '/message/').set('Welcome ' + this.model.firstname).then(
+            data => {
+                // set the invite link
+                this.inviteLink = 'https://dev.members.sudo.org.au/join/' + this.model.$key;
+            }
+        );
     }
 
 }

@@ -1,6 +1,28 @@
 <div class="container">
     <div class="row">
-        <h5>Edit&nbsp;<span *ngIf="!model">Member</span><span *ngIf="model">{{model.firstname}} {{model.lastname}}</span></h5>
+        <div class="col s6">
+            <h5>Edit&nbsp;<span *ngIf="!model">Member</span><span *ngIf="model">{{model.firstname}} {{model.lastname}}</span></h5>
+        </div>
+        <div *ngIf="!model?.uid" class="col s6 right-align">
+            <!-- Dropdown Trigger -->
+            <a materialize="dropdown" class='dropdown-button btn' data-activates='invite-dropdown'>Invite</a>
+
+            <!-- Dropdown Structure -->
+            <ul id='invite-dropdown' class='dropdown-content'>
+                <li><a (click)="makeLinkInvite()">Get Link</a></li>
+                <li><a>Email (not implemented)</a></li>
+            </ul>
+        </div>
+        <div *ngIf="model?.$key && !model?.uid && inviteLink" class="col s12 right-align">
+            <div class="col s10">
+                <!-- Target -->
+                <input id="foo" class="file-path" value="{{inviteLink}}">
+            </div>
+            <div class="col s2">
+                <!-- Trigger -->
+                <button class="copybtn btn" data-clipboard-target="#foo">Copy</button>
+            </div>
+        </div>
     </div>
     <div class="row">
         <form *ngIf="model" #memberForm="ngForm" (ngSubmit)="onSubmit()">
@@ -15,7 +37,8 @@
                     <br><br>
                 </div>
                 <div class="input-field col s6 right-align">
-                    <button class="btn waves-effect waves-light purple" type="button" routerLink="/payments/{{model.$key}}" routerLinkActive="active" [disabled]="!model?.$key">View Payments</button><br>
+                    <button class="btn waves-effect waves-light purple" type="button" routerLink="/payments/{{model.$key}}" routerLinkActive="active"
+                        [disabled]="!model?.$key">View Payments</button><br>
                     <small *ngIf="!model?.$key">Save First!</small>
                 </div>
 
