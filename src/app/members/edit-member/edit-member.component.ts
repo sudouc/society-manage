@@ -75,7 +75,7 @@ export class EditMemberComponent implements OnInit, OnChanges {
         this.af.database.object('/invitations/' + this.model.$key + '/message/').set('Welcome ' + this.model.firstname).then(
             data => {
                 // set the invite link
-                this.inviteLink = 'https://dev.members.sudo.org.au/join/' + this.model.$key;
+                this.inviteLink = 'https://devmembers.sudo.org.au/join/' + this.model.$key;
             }
         );
     }
